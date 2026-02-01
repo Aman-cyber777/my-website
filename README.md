@@ -7,15 +7,16 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #ffe6ea;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: #ffe6eb;
+      font-family: Arial, sans-serif;
     }
 
-    .container {
+    .questionContainer {
+      position: relative;
       text-align: center;
     }
 
@@ -38,29 +39,33 @@
       margin: 10px;
     }
 
-    .yes {
-      background-color: #ff5c8d;
+    #yesBtn {
+      background-color: #ff4d6d;
       color: white;
     }
 
-    .no {
+    #noBtn {
       background-color: #ff8fab;
       color: white;
       position: absolute;
     }
 
-    /* SECOND SCREEN */
-    #secondScreen {
+    /* Loader */
+    #heartLoader {
       display: none;
-      background: #ffcc80;
-      width: 100%;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      font-size: 40px;
+      animation: pulse 1s infinite;
     }
 
-    #secondScreen h1 {
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Result screen */
+    #resultContainer {
+      display: none;
       font-size: 60px;
       color: purple;
       animation: pop 1s infinite alternate;
@@ -75,33 +80,44 @@
 
 <body>
 
-  <!-- FIRST SCREEN -->
-  <div class="container" id="firstScreen">
-    <img src="https://i.imgur.com/9YQZ6kT.png" alt="cute image">
+  <div class="questionContainer" id="questionContainer">
+    <img src="images/love.png" alt="Love Image">
     <h1>Do you love me?</h1>
-    <button class="yes" onclick="showLove()">Yes</button>
-    <button class="no" id="noBtn">No</button>
-  </div>
 
-  <!-- SECOND SCREEN -->
-  <div class="container" id="secondScreen">
-    <h1>I LOVE YOU 😍</h1>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+
+    <div id="heartLoader">❤️</div>
+    <div id="resultContainer">I LOVE YOU 😍</div>
   </div>
 
   <script>
     const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const questionContainer = document.getElementById("questionContainer");
+    const heartLoader = document.getElementById("heartLoader");
+    const resultContainer = document.getElementById("resultContainer");
 
+    // NO button runs away
     noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+      const newX = Math.floor(Math.random() * 250);
+      const newY = Math.floor(Math.random() * 150);
+
+      noBtn.style.left = newX + "px";
+      noBtn.style.top = newY + "px";
     });
 
-    function showLove() {
-      document.getElementById("firstScreen").style.display = "none";
-      document.getElementById("secondScreen").style.display = "flex";
-    }
+    // YES button click
+    yesBtn.addEventListener("click", () => {
+      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
+      heartLoader.style.display = "block";
+
+      setTimeout(() => {
+        heartLoader.style.display = "none";
+        resultContainer.style.display = "block";
+      }, 3000);
+    });
   </script>
 
 </body>
